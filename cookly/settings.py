@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-e39p99y4*0e_#jdfh5&v)#$yx9_o4+s9_oj)p7-8j4%df+%*qr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://cookly-andas-decode.vercel.app', 'localhost']
 
 
 # Application definition
@@ -70,8 +70,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'http://localhost:5174',
+    "http://localhost:5173",
+    "https://cookly-andas-decode.vercel.app",
 ]
 CORS_ALLOW_CREDENTIALS = True
 
