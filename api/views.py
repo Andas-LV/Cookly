@@ -7,6 +7,11 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 
+
+@api_view(['GET'])
+def index(request):
+    return Response({"message": "НАКОНЕЦ ТО ВСЕ РАБОТАЕТ."})
+
 @api_view(['POST'])
 def register(request):
     serializer = RegisterSerializer(data=request.data)
