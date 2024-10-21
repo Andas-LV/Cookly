@@ -33,6 +33,9 @@
     <filter-actions connection-id="3c510413-fa65-496b-b0bc-89d2026c1b62" dataset="public.auth_user" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3c510413-fa65-496b-b0bc-89d2026c1b62" dataset="public.api_profile" active-filter-id="EMPTY_FILTER" />
   </component>
+  <component name="DBNavigator.Project.ExecutionManager">
+    <retain-sticky-names value="false" />
+  </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
     <filters />
