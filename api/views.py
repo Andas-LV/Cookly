@@ -10,7 +10,7 @@ from rest_framework.decorators import permission_classes
 
 @api_view(['GET'])
 def index(request):
-    return Response({"message": "НАКОНЕЦ ТО ВСЕ РАБОТАЕТ."})
+    return Response({"message": "ВСЕ РАБОТАЕТ."})
 
 @api_view(['POST'])
 def register(request):
