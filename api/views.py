@@ -1,12 +1,12 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import RegisterSerializer, UserSerializer, LoginSerializer
-from .models import Profile
+from .serializers import (RegisterSerializer, UserSerializer, LoginSerializer,
+                          RecipeSerializer, ProductSerializer,RecipeDetailSerializer)
+from .models import Profile, Recipe, Product
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
-
 
 @api_view(['GET'])
 def index(request):
@@ -61,3 +61,54 @@ def update_avatar(request):
             'avatar_url': avatar_url
         })
     return Response({'error': 'No avatar file provided.'}, status=400)
+
+@api_view(['GET'])
+def get_all_recipes(request):
+    recipes = Recipe.objects.all()
+    serializer = RecipeSerializer(recipes, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_recipe_products(request, recipe_id):
+    try:
+        recipe = Recipe.objects.get(id=recipe_id)
+        serializer = RecipeDetailSerializer(recipe)
+        return Response(serializer.data)
+    except Recipe.DoesNotExist:
+        return Response({'error': 'Recipe not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_all_products(request):
+    products = Product.objects.all()
+    serializer = ProductSerializer(products, many=True)
+    return Response(serializer.data)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_recipe_image(request, id):
+    try:
+        recipe = Recipe.objects.get(id=id)
+    except Recipe.DoesNotExist:
+        return Response({'error': 'Recipe does not exist.'}, status=404)
+
+    if 'image' in request.FILES:
+        recipe.image = request.FILES['image']
+        recipe.save()
+        return Response({'message': 'Recipe image updated successfully.'}, status=200)
+    return Response({'error': 'No image file provided.'}, status=400)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_product_image(request, id):
+    try:
+        product = Product.objects.get(id=id)
+    except Product.DoesNotExist:
+        return Response({'error': 'Product does not exist.'}, status=404)
+
+    if 'image' in request.FILES:
+        product.image = request.FILES['image']
+        product.save()
+        return Response({'message': 'Recipe image updated successfully.'}, status=200)
+    return Response({'error': 'No image file provided.'}, status=400)
