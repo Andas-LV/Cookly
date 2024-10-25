@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-e39p99y4*0e_#jdfh5&v)#$yx9_o4+s9_oj)p7-8j4%df+%*qr
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = socket.gethostname() in ['localhost', 'http://127.0.0.1']
 DEBUG = True
-ALLOWED_HOSTS = ['.vercel.app', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['.vercel.app', 'https://cookly-andas-decode.vercel.app','localhost', '127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [
@@ -122,7 +122,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/media/'
