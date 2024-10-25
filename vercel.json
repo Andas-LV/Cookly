@@ -9,6 +9,10 @@
     }],
     "routes": [
       {
+        "src": "/media/(.*)",
+        "dest": "/media/$1"
+      },
+      {
         "src": "/(.*)",
         "dest": "cookly/wsgi.py"
       }
