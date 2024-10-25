@@ -1,16 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.files.storage import DefaultStorage
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, storage=DefaultStorage())
 
     def __str__(self):
         return self.user.username
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='products/', null=True, blank=True)
+    image = models.ImageField(upload_to='products/', null=True, blank=True, storage=DefaultStorage())
 
     class Meta:
         db_table = 'products'
@@ -22,7 +23,7 @@ class Recipe(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     products = models.ManyToManyField(Product, related_name='recipes')
-    image = models.ImageField(upload_to='recipes/', null=True, blank=True)
+    image = models.ImageField(upload_to='recipes/', null=True, blank=True, storage=DefaultStorage())
 
     class Meta:
         db_table = 'recipes'
