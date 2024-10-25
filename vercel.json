@@ -9,12 +9,12 @@
     }],
     "routes": [
       {
-        "src": "/(.*)",
-        "dest": "cookly/wsgi.py"
+      "src": "/media/(.*)",
+      "dest": "media/$1"
       },
       {
-      "src": "/media/(.*)",
-      "dest": "/media/$1"
-    }
+        "src": "/(.*)",
+        "dest": "cookly/wsgi.py"
+      }
     ]
 }
