@@ -40,7 +40,7 @@ def get_me(request):
     user = request.user
     return Response(UserSerializer(user).data)
 
-@api_view(['PUT'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def update_avatar(request):
     try:

@@ -21,6 +21,7 @@ def get_recipe_products(request, recipe_id):
     except Recipe.DoesNotExist:
         return Response({'error': 'Recipe not found.'}, status=status.HTTP_404_NOT_FOUND)
 
+
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_recipe_image(request, id):
