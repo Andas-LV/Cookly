@@ -1,16 +1,16 @@
 {
     "builds": [{
-        "src": "cookly/wsgi.py",
-        "use": "@vercel/python",
-        "config": {
-            "maxLambdaSize": "15mb",
-            "runtime": "python3.12.6"
-        }
+      "src": "cookly/wsgi.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "15mb",
+        "runtime": "python3.12.6"
+      }
     }],
     "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "cookly/wsgi.py"
-        }
+      {
+        "src": "/(.*)",
+        "dest": "cookly/wsgi.py"
+      }
     ]
 }
