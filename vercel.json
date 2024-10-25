@@ -11,6 +11,10 @@
       {
         "src": "/(.*)",
         "dest": "cookly/wsgi.py"
-      }
+      },
+      {
+      "src": "/media/(.*)",
+      "dest": "/media/$1"
+    }
     ]
 }
