@@ -12,8 +12,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-e39p99y4*0e_#jdfh5&v)#$yx9_o4+s9_oj)p7-8j4%df+%*qr'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = socket.gethostname() in ['localhost', 'http://127.0.0.1']
-DEBUG = True
+DEBUG = socket.gethostname() in ['localhost', 'http://127.0.0.1']
+
 ALLOWED_HOSTS = ['.vercel.app','localhost', '127.0.0.1']
 
 # Application definition
@@ -28,7 +28,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'api',
     'corsheaders',
-    'storages',
     'drf_yasg',
 ]
 
