@@ -1,6 +1,6 @@
 from .views import users_views, recipes_views, products_views
 from rest_framework_simplejwt.views import TokenRefreshView
-from django.urls import path, re_path
+from django.urls import path
 
 urlpatterns = [
     path('', users_views.index, name='index'),
