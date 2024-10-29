@@ -5,6 +5,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from ..serializers import RegisterSerializer, UserSerializer, LoginSerializer
 from ..models import Profile
+from ..tasks import update_avatar_task
 
 @api_view(['GET'])
 def index(request):
@@ -40,22 +41,16 @@ def get_me(request):
     user = request.user
     return Response(UserSerializer(user).data)
 
+
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_avatar(request):
-    try:
-        profile = request.user.profile
-    except Profile.DoesNotExist:
-        return Response({'error': 'User profile does not exist.'}, status=404)
-
     avatar_file = request.FILES.get('avatar')
     if avatar_file:
-        profile.avatar = avatar_file
-        profile.save()
-        avatar_url = profile.avatar.url
+        update_avatar_task.delay(request.user.id, avatar_file)
+
         return Response({
-            'message': 'Avatar updated successfully.',
+            'message': 'Avatar upload started successfully. It will be updated shortly.',
             'user': UserSerializer(request.user).data,
-            'avatar_url': avatar_url
         })
     return Response({'error': 'No avatar file provided.'}, status=400)
