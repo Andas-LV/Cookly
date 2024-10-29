@@ -6,9 +6,45 @@ from ..serializers import RecipeSerializer, RecipeDetailSerializer
 from rest_framework.permissions import IsAuthenticated
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_all_recipes(request):
     recipes = Recipe.objects.all()
     serializer = RecipeSerializer(recipes, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_healthy_recipes(request):
+    healthy_recipes = Recipe.objects.filter(healthy=True)
+    serializer = RecipeSerializer(healthy_recipes, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_breakfast_recipes(request):
+    breakfast_recipes = Recipe.objects.filter(meal_type='breakfast')
+    serializer = RecipeSerializer(breakfast_recipes, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_lunch_recipes(request):
+    lunch_recipes = Recipe.objects.filter(meal_type='lunch')
+    serializer = RecipeSerializer(lunch_recipes, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_dinner_recipes(request):
+    dinner_recipes = Recipe.objects.filter(meal_type='dinner')
+    serializer = RecipeSerializer(dinner_recipes, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_popular_recipes(request):
+    popular_recipes = Recipe.objects.filter(popular=True)
+    serializer = RecipeSerializer(popular_recipes, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
