@@ -1,6 +1,4 @@
 *.env
 
 .vercel
-
 *commands.txt
-*requirements.txt
