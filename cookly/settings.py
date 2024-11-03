@@ -15,7 +15,12 @@ SECRET_KEY = 'django-insecure-e39p99y4*0e_#jdfh5&v)#$yx9_o4+s9_oj)p7-8j4%df+%*qr
 # DEBUG = socket.gethostname() in ['localhost', 'http://127.0.0.1']
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app','localhost', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'cookly-andas-decode.vercel.app',
+    '.vercel.app',
+    'localhost',
+    '127.0.0.1',
+]
 
 # Application definition
 INSTALLED_APPS = [
@@ -51,8 +56,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
