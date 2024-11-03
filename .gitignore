@@ -2,4 +2,5 @@
 
 .vercel
 
-commands.txt
+*commands.txt
+*requirements.txt
