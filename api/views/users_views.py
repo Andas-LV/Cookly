@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from ..serializers import RegisterSerializer, UserSerializer, LoginSerializer
 from ..models import Profile
 from ..tasks import update_avatar_task
+from django.core.files.storage import default_storage
 
 @api_view(['GET'])
 def index(request):
@@ -41,17 +42,21 @@ def get_me(request):
     user = request.user
     return Response(UserSerializer(user).data)
 
-
 # @api_view(['PUT'])
 # @permission_classes([IsAuthenticated])
 # def update_avatar(request):
+#     try:
+#         profile = request.user.profile
+#     except Profile.DoesNotExist:
+#         return Response({'error': 'User profile does not exist.'}, status=404)
+#
 #     avatar_file = request.FILES.get('avatar')
 #     if avatar_file:
-#         update_avatar_task.delay(request.user.id, avatar_file)
+#         avatar_file_path = default_storage.save(f'temp_avatars/{avatar_file.name}', avatar_file)
+#         update_avatar_task.delay(request.user.id, avatar_file_path)
 #
 #         return Response({
-#             'message': 'Avatar upload started successfully. It will be updated shortly.',
-#             'user': UserSerializer(request.user).data,
+#             'message': 'Avatar upload started successfully. It will be updated shortly.'
 #         })
 #     return Response({'error': 'No avatar file provided.'}, status=400)
 
