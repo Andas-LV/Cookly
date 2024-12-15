@@ -3,10 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
-from ..serializers import RegisterSerializer, UserSerializer, LoginSerializer
-from ..models import Profile
-from ..tasks import update_avatar_task
-from django.core.files.storage import default_storage
+from ..serializers import RegisterSerializer, UserSerializer, LoginSerializer, IngredientSerializer, RecipeSerializer
+from ..models import Profile, Ingredient, Recipes
 
 @api_view(['GET'])
 def index(request):
@@ -40,25 +38,19 @@ def login(request):
 @permission_classes([IsAuthenticated])
 def get_me(request):
     user = request.user
-    return Response(UserSerializer(user).data)
+    favourite_ingredients = Ingredient.objects.filter(is_favourite=True)
+    basket_ingredients = Ingredient.objects.filter(in_basket=True)
+    favourite_recipes = Recipes.objects.filter(is_favourite=True)
+    basket_recipes = Recipes.objects.filter(in_basket=True)
 
-# @api_view(['PUT'])
-# @permission_classes([IsAuthenticated])
-# def update_avatar(request):
-#     try:
-#         profile = request.user.profile
-#     except Profile.DoesNotExist:
-#         return Response({'error': 'User profile does not exist.'}, status=404)
-#
-#     avatar_file = request.FILES.get('avatar')
-#     if avatar_file:
-#         avatar_file_path = default_storage.save(f'temp_avatars/{avatar_file.name}', avatar_file)
-#         update_avatar_task.delay(request.user.id, avatar_file_path)
-#
-#         return Response({
-#             'message': 'Avatar upload started successfully. It will be updated shortly.'
-#         })
-#     return Response({'error': 'No avatar file provided.'}, status=400)
+    user_data = UserSerializer(user).data
+    user_data['favourite_ingredients'] = IngredientSerializer(favourite_ingredients, many=True).data
+    user_data['basket_ingredients'] = IngredientSerializer(basket_ingredients, many=True).data
+    user_data['favourite_recipes'] = RecipeSerializer(favourite_recipes, many=True).data
+    user_data['basket_recipes'] = RecipeSerializer(basket_recipes, many=True).data
+
+    return Response(user_data)
+
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])

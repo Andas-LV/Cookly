@@ -1,23 +1,44 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Profile, Recipe, Product
+from .models import Profile, Recipes, Ingredient, RecipeIngredient
+
+class IngredientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ingredient
+        fields = ['id', 'name', 'image', 'is_favourite', 'in_basket']
+
+class RecipeIngredientSerializer(serializers.ModelSerializer):
+    ingredient = IngredientSerializer()
+
+    class Meta:
+        model = RecipeIngredient
+        fields = ['ingredient', 'amount']
 
 class RecipeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Recipe
-        fields = '__all__'
-
-class ProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = '__all__'
-
-class RecipeDetailSerializer(serializers.ModelSerializer):
-    products = ProductSerializer(many=True, read_only=True)
+    ingredients = RecipeIngredientSerializer(many=True)
 
     class Meta:
-        model = Recipe
-        fields = '__all__'
+        model = Recipes
+        fields = [
+            'id', 'name', 'category', 'cooking_time', 'calories',
+            'cooking_level', 'description', 'preparation', 'ingredients',
+            'image', 'is_favourite', 'in_basket'
+        ]
+
+        def get_ingredients(self, obj):
+            return [
+                {
+                    "name": ri.ingredient.name,
+                    "amount": ri.amount
+                }
+                for ri in obj.recipeingredient_set.all()
+            ]
+
+class RecipeByCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recipes
+        fields = ['id', 'name', 'image', 'cooking_time', 'is_favourite']
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:

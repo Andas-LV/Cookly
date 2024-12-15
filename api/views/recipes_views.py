@@ -1,73 +1,53 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
-from ..models import Recipe
-from ..serializers import RecipeSerializer, RecipeDetailSerializer
+from ..models import Recipes
+from ..serializers import RecipeSerializer, RecipeByCategorySerializer
 from rest_framework.permissions import IsAuthenticated
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_all_recipes(request):
-    recipes = Recipe.objects.all()
-    serializer = RecipeSerializer(recipes, many=True)
-    return Response(serializer.data)
+def get_recipes_by_category(request, category):
+    recipes = Recipes.objects.filter(category=category)
+    if recipes.exists():
+        serializer = RecipeByCategorySerializer(recipes, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response({'error': 'Рецепты с данной категорией не найдены'}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_healthy_recipes(request):
-    healthy_recipes = Recipe.objects.filter(healthy=True)
-    serializer = RecipeSerializer(healthy_recipes, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_breakfast_recipes(request):
-    breakfast_recipes = Recipe.objects.filter(meal_type='breakfast')
-    serializer = RecipeSerializer(breakfast_recipes, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_lunch_recipes(request):
-    lunch_recipes = Recipe.objects.filter(meal_type='lunch')
-    serializer = RecipeSerializer(lunch_recipes, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_dinner_recipes(request):
-    dinner_recipes = Recipe.objects.filter(meal_type='dinner')
-    serializer = RecipeSerializer(dinner_recipes, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_popular_recipes(request):
-    popular_recipes = Recipe.objects.filter(popular=True)
-    serializer = RecipeSerializer(popular_recipes, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_recipe_products(request, recipe_id):
+def get_recipe_by_id(request, recipe_id):
     try:
-        recipe = Recipe.objects.get(id=recipe_id)
-        serializer = RecipeDetailSerializer(recipe)
-        return Response(serializer.data)
-    except Recipe.DoesNotExist:
-        return Response({'error': 'Recipe not found.'}, status=status.HTTP_404_NOT_FOUND)
+        recipe = Recipes.objects.get(id=recipe_id)
+        serializer = RecipeSerializer(recipe)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Recipes.DoesNotExist:
+        return Response({'error': 'Рецепт не найден'}, status=status.HTTP_404_NOT_FOUND)
 
-
-@api_view(['PUT'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def update_recipe_image(request, id):
+def toggle_recipe_favourite(request, recipe_id):
     try:
-        recipe = Recipe.objects.get(id=id)
-    except Recipe.DoesNotExist:
-        return Response({'error': 'Recipe does not exist.'}, status=404)
-
-    if 'image' in request.FILES:
-        recipe.image = request.FILES['image']
+        recipe = Recipes.objects.get(id=recipe_id)
+        recipe.is_favourite = not recipe.is_favourite
         recipe.save()
-        return Response({'message': 'Recipe image updated successfully.'}, status=200)
-    return Response({'error': 'No image file provided.'}, status=400)
+        return Response({
+            'recipe_name': recipe.name,
+            'is_favourite': recipe.is_favourite
+        }, status=status.HTTP_200_OK)
+    except Recipes.DoesNotExist:
+        return Response({'error': 'Рецепт не найден'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def toggle_recipe_basket(request, recipe_id):
+    try:
+        recipe = Recipes.objects.get(id=recipe_id)
+        recipe.in_basket = not recipe.in_basket
+        recipe.save()
+        return Response({
+            'recipe_name': recipe.name,
+            'in_basket': recipe.in_basket
+        }, status=status.HTTP_200_OK)
+    except Recipes.DoesNotExist:
+        return Response({'error': 'Рецепт не найден'}, status=status.HTTP_404_NOT_FOUND)

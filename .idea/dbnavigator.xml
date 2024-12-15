@@ -17,24 +17,33 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="3c510413-fa65-496b-b0bc-89d2026c1b62">
-      <console name="cookly" type="STANDARD" schema="public" session="Main" />
+      <console name="cookly" type="STANDARD" schema="public" session="Main"><![CDATA[ALTER TABLE ingredients
+DROP COLUMN image;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files />
+    <open-files>
+      <object connection-id="3c510413-fa65-496b-b0bc-89d2026c1b62" object-ref="schemas/public/tables/ingredients" />
+      <object connection-id="3c510413-fa65-496b-b0bc-89d2026c1b62" object-ref="schemas/public/tables/recipe_products" />
+      <object connection-id="3c510413-fa65-496b-b0bc-89d2026c1b62" object-ref="schemas/public/tables/recipes" />
+    </open-files>
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="3c510413-fa65-496b-b0bc-89d2026c1b62" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="3c510413-fa65-496b-b0bc-89d2026c1b62" dataset="public.recipes_products" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3c510413-fa65-496b-b0bc-89d2026c1b62" dataset="public.recipe_ingredients" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3c510413-fa65-496b-b0bc-89d2026c1b62" dataset="public.recipe_products" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3c510413-fa65-496b-b0bc-89d2026c1b62" dataset="public.recipe" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3c510413-fa65-496b-b0bc-89d2026c1b62" dataset="public.auth_user" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3c510413-fa65-496b-b0bc-89d2026c1b62" dataset="public.recipes" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3c510413-fa65-496b-b0bc-89d2026c1b62" dataset="public.products" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3c510413-fa65-496b-b0bc-89d2026c1b62" dataset="public.api_profile" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3c510413-fa65-496b-b0bc-89d2026c1b62" dataset="public.ingredients" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />
@@ -51,7 +60,7 @@
           <description value="" />
           <database-type value="POSTGRES" />
           <config-type value="BASIC" />
-          <database-version value="16.4" />
+          <database-version value="16.6" />
           <driver-source value="BUNDLED" />
           <driver-library value="" />
           <driver value="" />
@@ -531,5 +540,9 @@
         </visibility-settings>
       </environment>
     </general-settings>
+  </component>
+  <component name="DBNavigator.Project.StatementExecutionManager">
+    <execution-variables />
+    <execution-variable-types />
   </component>
 </project>

@@ -1,4 +1,4 @@
-from .views import users_views, recipes_views, products_views
+from .views import users_views, recipes_views, ingredients_views
 from rest_framework_simplejwt.views import TokenRefreshView
 from django.urls import path
 
@@ -9,20 +9,18 @@ urlpatterns = [
     path('login/', users_views.login),
     path('user/me/', users_views.get_me, name='user-me'),
     # GENERAL
-    path('recipes/', recipes_views.get_all_recipes, name='get_all_recipes'),
-    path('products/', products_views.get_all_products, name='get_all_products'),
-    # FILTERED RECIPES
-    path('recipes/getHealthyRecipes/', recipes_views.get_healthy_recipes, name='get_all_recipes'),
-    path('recipes/getBreakfastRecipes/', recipes_views.get_breakfast_recipes, name='get_all_recipes'),
-    path('recipes/getLunchRecipes/', recipes_views.get_lunch_recipes, name='get_all_recipes'),
-    path('recipes/getDinnerRecipes/', recipes_views.get_dinner_recipes, name='get_all_recipes'),
-    path('recipes/getPopularRecipes/', recipes_views.get_popular_recipes, name='get_all_recipes'),
+    path('recipes/category/<str:category>/', recipes_views.get_recipes_by_category, name='get_recipes_by_category'),
+    path('ingredients/', ingredients_views.get_all_ingredients, name='get_all_products'),
+
+    # FAVOURITE & BASKET
+    path('ingredients/<int:ingredient_id>/favourite/', ingredients_views.toggle_favourite, name='toggle_favourite'),
+    path('ingredients/<int:ingredient_id>/basket/', ingredients_views.toggle_basket, name='toggle_basket'),
+    path('recipes/<int:recipe_id>/favourite/', recipes_views.toggle_recipe_favourite, name='toggle_recipe_favourite'),
+    path('recipes/<int:recipe_id>/basket/', recipes_views.toggle_recipe_basket, name='toggle_recipe_basket'),
     # BY ID
-    path('recipes/<int:recipe_id>/products/', recipes_views.get_recipe_products, name='get_recipe_products'),
-    path('products/<int:product_id>/recipes/', products_views.get_recipes_by_product, name='get_recipes_by_product'),
+    path('recipes/<int:recipe_id>/', recipes_views.get_recipe_by_id, name='get_recipe_products'),
+    path('ingredients/<int:ingredient_id>/', ingredients_views.get_ingredient_by_id, name='get_ingredient_by_id'),
     # AVATARS & UTILS
     path('token/refresh/', TokenRefreshView.as_view(), name='token-refresh'),
     path('user/update-avatar/', users_views.update_avatar, name='update-avatar'),
-    path('recipes/<int:id>/upload-image/', recipes_views.update_recipe_image, name='recipe-upload-image'),
-    path('products/<int:id>/upload-image/', products_views.update_product_image, name='product-upload-image'),
 ]
