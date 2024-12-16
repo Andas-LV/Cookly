@@ -5,7 +5,7 @@ from .models import Profile, Recipes, Ingredient, RecipeIngredient
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = ['id', 'name', 'image', 'is_favourite', 'in_basket']
+        fields = '__all__'
 
 class RecipeIngredientSerializer(serializers.ModelSerializer):
     ingredient = IngredientSerializer()
@@ -19,11 +19,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipes
-        fields = [
-            'id', 'name', 'category', 'cooking_time', 'calories',
-            'cooking_level', 'description', 'preparation', 'ingredients',
-            'image', 'is_favourite', 'in_basket'
-        ]
+        fields = '__all__'
 
         def get_ingredients(self, obj):
             return [

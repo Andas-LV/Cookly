@@ -26,8 +26,6 @@ DROP COLUMN image;]]></console>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files>
-      <object connection-id="3c510413-fa65-496b-b0bc-89d2026c1b62" object-ref="schemas/public/tables/ingredients" />
-      <object connection-id="3c510413-fa65-496b-b0bc-89d2026c1b62" object-ref="schemas/public/tables/recipe_products" />
       <object connection-id="3c510413-fa65-496b-b0bc-89d2026c1b62" object-ref="schemas/public/tables/recipes" />
     </open-files>
   </component>

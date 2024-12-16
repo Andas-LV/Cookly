@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,10 +9,25 @@ from rest_framework.permissions import IsAuthenticated
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_recipes_by_category(request, category):
-    recipes = Recipes.objects.filter(category=category)
+    min_time = request.query_params.get('min_time')
+    max_time = request.query_params.get('max_time')
+    level = request.query_params.get('level')
+
+    filters = Q(category=category)
+
+    if min_time is not None:
+        filters &= Q(cooking_time__gte=min_time)
+    if max_time is not None:
+        filters &= Q(cooking_time__lte=max_time)
+    if level is not None:
+        filters &= Q(cooking_level=level)
+
+    recipes = Recipes.objects.filter(filters)
+
     if recipes.exists():
         serializer = RecipeByCategorySerializer(recipes, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
     return Response({'error': 'Рецепты с данной категорией не найдены'}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET'])
